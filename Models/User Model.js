@@ -22,7 +22,6 @@ const schema = new mongoose.Schema(
         type:String,
         enum:["user","admin"],
         default:"user",
-        default :"admin"
     }
   },
   { timestamps: true },
