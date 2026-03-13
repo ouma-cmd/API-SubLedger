@@ -3,6 +3,9 @@ const express = require("express");
 const con = require("./config/db");
 
 const LogiRouter = require("./routes/login.js");
+const post = require("./routes/subscriptionRoutes.js");
+
+const susbscriptionRoutes = require("./routes/subscriptionRoutes.js");
 
 const dotenv = require("dotenv");
 const authentication = require("./middlewares/authentication.middleware.js");
@@ -65,6 +68,7 @@ app.get("/data", authentication, (req, res) => {
   }
 });
 app.use("/users", LogiRouter);
+app.use("/abn", authentication, susbscriptionRoutes);
 
 app.listen(5000, () => {
   console.log("server running on port 5000");

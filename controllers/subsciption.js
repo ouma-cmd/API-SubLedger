@@ -1,12 +1,12 @@
 const Subscription = require("../Models/Subscription");
+const User = require("../Models/User Model");
 
 // CREATE subscription
 async function createSubscription(req, res) {
-  const userId = req.user.id; // جاي من authentication middleware
+  const userId = req.user.id; // jay mn uthentication middleware
   const { plan, price } = req.body;
 
   try {
-    // شيك واش عندو subscription active
     const activeSub = await Subscription.findOne({ userId, status: "active" });
     if (activeSub) {
       return res
@@ -59,14 +59,16 @@ async function updateSubscription(req, res) {
     const updatedSub = await Subscription.findOneAndUpdate(
       { _id: req.params.id, userId },
       req.body,
-      { new: true }
+      { new: true },
     );
 
     if (!updatedSub) {
       return res.status(404).json({ message: "Subscription not found" });
     }
 
-    res.status(200).json({ message: "Subscription updated", subscription: updatedSub });
+    res
+      .status(200)
+      .json({ message: "Subscription updated", subscription: updatedSub });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -76,11 +78,26 @@ async function updateSubscription(req, res) {
 async function deleteSubscription(req, res) {
   const userId = req.user.id;
   try {
-    const deletedSub = await Subscription.findOneAndDelete({ _id: req.params.id, userId });
+    const deletedSub = await Subscription.findOneAndDelete({
+      _id: req.params.id,
+      userId,
+    });
     if (!deletedSub) {
       return res.status(404).json({ message: "Subscription not found" });
     }
-    res.status(200).json({ message: "Subscription deleted", subscription: deletedSub });
+    res
+      .status(200)
+      .json({ message: "Subscription deleted", subscription: deletedSub });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
+async function getUsers(req, res) {
+  try {
+    console.log(req.user);
+    const users = await User.find(); // kayjib kul users
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -91,4 +108,5 @@ module.exports = {
   getMySubscriptions,
   updateSubscription,
   deleteSubscription,
+  getUsers,
 };

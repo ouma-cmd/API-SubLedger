@@ -13,6 +13,8 @@ const rout = express.Router()
 
 rout.post("/login", loginContoller  )
 rout.post("/register",validation,register) ;
+
+
 rout.get("/admin", auth, role(["admin"]), (req, res) => {
     res.status(200).json({ message: "Welcome Admin!" });
 });
