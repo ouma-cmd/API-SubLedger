@@ -1,0 +1,23 @@
+name: 🚀 SubLedger CI Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build and run services
+        run: |
+          docker compose up -d mongo
+          docker compose build server
+
+      - name: Run Integration Tests
+        run: docker compose run --rm server npm run test
