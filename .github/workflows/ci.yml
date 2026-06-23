@@ -24,5 +24,8 @@ jobs:
           docker compose up -d mongo
           docker compose build server
 
+      - name: Wait for MongoDB to be ready
+        run: sleep 10
+
       - name: Run Integration Tests
         run: docker compose run --rm server npm run test
