@@ -1,4 +1,4 @@
-name: 🚀 SubLedger CI Pipeline
+name: 🚀 SubLedger CI Pipeline v2
 
 on:
   push:
