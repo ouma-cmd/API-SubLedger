@@ -10,22 +10,28 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create Dummy Env File
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node_version: "18"
+
+      - name: Create Env File
         run: |
-          echo "MONGO_URI=mongodb://mongo:27017/subledger" > .env
+          echo "MONGO_URI=mongodb://localhost:27017/subledger" > .env
           echo "PORT=5000" >> .env
 
-      - name: Build and run services
-        run: |
-          docker compose up -d mongo
-          docker compose build server
-
-      - name: Wait for MongoDB to be ready
-        run: sleep 10
+      - name: Install dependencies
+        run: npm install
 
       - name: Run Integration Tests
-        run: docker compose run --rm server npm run test
+        run: npm run test
