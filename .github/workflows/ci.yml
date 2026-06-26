@@ -12,11 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with: node-version:"24"
+      - name: install deps
+        run: npm ci
 
-      - name: Build containers
-        run: docker compose build
-
-      - name: Run tests
-        run: docker compose run --rm server npm test
+      - name: Run test
+        run: npm test -- --ci
