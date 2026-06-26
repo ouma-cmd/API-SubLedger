@@ -41,8 +41,8 @@ jobs:
       - name: Check npm
         run: npm -v
 
-      - name: Check Jest
-        run: npx jest --version
+      - name: Run Integration Tests
+        run: npm test
 
       - name: Run Integration Tests
         run: npm test
