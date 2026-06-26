@@ -1,48 +1,22 @@
-name: 🚀 SubLedger CI Pipeline v2
+name: 🚀 SubLedger CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
 
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      mongodb:
-        image: mongo:latest
-        ports:
-          - 27017:27017
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
+      - name: Build containers
+        run: docker compose build
 
-      - name: Create Env File
-        run: |
-          echo "MONGO_URI=mongodb://localhost:27017/subledger" > .env
-          echo "PORT=5000" >> .env
-          echo "JWT_SECRET=mysecretkey" >> .env
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Check Node
-        run: node -v
-
-      - name: Check npm
-        run: npm -v
-
-      - name: Run Integration Tests
-        run: npm test
-
-      - name: Run Integration Tests
-        run: npm test
+      - name: Run tests
+        run: docker compose run --rm server npm test
