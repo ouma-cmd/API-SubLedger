@@ -35,5 +35,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Check Node
+        run: node -v
+
+      - name: Check npm
+        run: npm -v
+
+      - name: Check Jest
+        run: npx jest --version
+
       - name: Run Integration Tests
         run: npm test
