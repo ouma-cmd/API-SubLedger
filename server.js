@@ -1,20 +1,18 @@
 const express = require("express");
+const dotenv = require("dotenv");
 
 const con = require("./config/db");
+const LogiRouter = require("./routes/login");
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
+const authentication = require("./middlewares/authentication.middleware");
 
-const LogiRouter = require("./routes/login.js");
-const post = require("./routes/subscriptionRoutes.js");
-
-const susbscriptionRoutes = require("./routes/subscriptionRoutes.js");
-
-const dotenv = require("dotenv");
-const authentication = require("./middlewares/authentication.middleware.js");
 dotenv.config();
 
-con(process.env.MONGO_URI); //process.env howa
-
 const app = express();
+
 app.use(express.json());
+
+con(process.env.MONGO_URI);
 
 app.get("/data", authentication, (req, res) => {
   try {
@@ -23,56 +21,19 @@ app.get("/data", authentication, (req, res) => {
         name: "oumamia",
         age: 20,
       },
-      {
-        name: "oumamia",
-        age: 20,
-      },
-      {
-        name: "oumamia",
-        age: 20,
-      },
-      {
-        name: "oumamia",
-        age: 20,
-      },
-      {
-        name: "oumamia",
-        age: 20,
-      },
-      {
-        name: "oumamia",
-        age: 20,
-      },
-      {
-        name: "oumamia",
-        age: 20,
-      },
-      {
-        name: "oumamia",
-        age: 20,
-      },
-      {
-        name: "oumamia",
-        age: 20,
-      },
-      {
-        name: "oumamia",
-        age: 20,
-      },
     ];
 
     console.log(req.user);
+
     res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ message: "internal server error !" });
+    res.status(500).json({
+      message: "internal server error !",
+    });
   }
 });
+
 app.use("/users", LogiRouter);
-app.use("/abn", authentication, susbscriptionRoutes);
+app.use("/abn", authentication, subscriptionRoutes);
 
-app.listen(5000, () => {
-  console.log("server running on port 5000");
-});
-
-
-module.exports = app
+module.exports = app;
